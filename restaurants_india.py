@@ -44,6 +44,9 @@ else:
 	type_of_establishment = "['{}']".format(type_of_food)
 	city_df = city_df[(city_df['establishment'] == type_of_establishment) & (city_df['aggregate_rating'] > minimum_rating)]
 
+if st.sidebar.checkbox('Home Delivery', False):
+	city_df = city_df[city_df['delivery'] == 1]	
+	
 price = st.sidebar.selectbox('Price Range', ['0-200', '200-500', '500-1000', '1000-2000', '2000+','None'])
 if price == "0-200":
 	city_df = city_df[city_df['average_cost_for_two'] <= 200]
@@ -59,4 +62,7 @@ if price == "1000-2000":
 if price == "2000+":
 	city_df = city_df[city_df['average_cost_for_two'] > 2000]
 
-st.map(city_df[['latitude','longitude']])
+if len(city_df) == 0:
+	st.error('No such restaurants available')
+else:
+	st.map(city_df[['latitude','longitude']])
