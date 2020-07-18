@@ -10,6 +10,7 @@ def load_data():
 	df = df[df['longitude'] != 0]
 	df = df[df['latitude'] != 0]
 	df.replace({"['CafÃ©']": "['Cafe']"}, inplace=True)
+	df.drop_duplicates(subset= ['latitude','longitude'] ,inplace=True)
 	return df
 
 df = load_data()
@@ -22,7 +23,7 @@ for item in df['establishment'].unique().tolist():
         pass
 
 st.image('https://wallpapercave.com/wp/wp1874155.jpg', use_column_width = True)
-st.header('Indian Restaurants Explorer')
+st.title('Indian Restaurants Explorer')
 st.markdown('')
 
 city = st.sidebar.selectbox('Select your City', ['All'] + df['city'].unique().tolist())
@@ -66,3 +67,8 @@ if len(city_df) == 0:
 	st.error('No such restaurants available')
 else:
 	st.map(city_df[['latitude','longitude']])
+	st.subheader('Top restaurants:')
+	st.markdown('')
+	for i in range(min(5,len(city_df))):
+		st.markdown('**_{} -_**'.format(city_df.sort_values('aggregate_rating',ascending=False)['name'].iloc[i]))
+		st.markdown('_{}_'.format(city_df.sort_values('aggregate_rating',ascending=False)['address'].iloc[i]))
