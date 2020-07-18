@@ -6,7 +6,7 @@ def load_data():
 	restaurants1 = pd.read_csv('restaurants1.csv', encoding = 'latin-1')
 	restaurants2 = pd.read_csv('restaurants2.csv', encoding = 'latin-1')
 	df = pd.concat([restaurants1,restaurants2])
-	df.drop(['url','currency','zipcode','city_id','country_id','locality_verbose','address','takeaway','opentable_support','highlights','timings'], axis=1, inplace=True)
+	df.drop(['url','currency','zipcode','city_id','country_id','locality_verbose','takeaway','opentable_support','highlights','timings'], axis=1, inplace=True)
 	df = df[df['longitude'] != 0]
 	df = df[df['latitude'] != 0]
 	df.replace({"['CafÃ©']": "['Cafe']"}, inplace=True)
